@@ -10,5 +10,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+void start_new_shell(void);
 
 #endif
