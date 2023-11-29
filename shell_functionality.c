@@ -1,6 +1,7 @@
 #include "simple_shell.h"
 /**
  * start_new_shell - function prints out a greeting and a username
+ * Description: getenv collects the value of "username"
  */
 
 void start_new_shell(void)
