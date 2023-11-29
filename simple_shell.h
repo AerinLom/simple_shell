@@ -11,5 +11,6 @@
 #include <stdlib.h>
 
 void start_new_shell(void);
+int command_input(char *type_command);
 
 #endif
