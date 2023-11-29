@@ -12,3 +12,29 @@ void start_new_shell(void)
 
 	printf("profile_name: @%s\n", profile_name);
 }
+
+/**
+ * command_input - function captures user input
+ * @type_command: a pointer pointing to a character
+ * Description: This function displays user input and stores it
+ * Return: 0 if string is empty, otherwise return 1
+ */
+int command_input(char *type_command)
+{
+	char *memory;
+
+	memory = readline("\n$ ");
+
+	if (strlen(memory) != 0)
+	{
+		save_command_history(memory);
+
+		strcpy(type_command, memory);
+
+		return (0);
+	}
+	else
+	{
+		return (1);
+	}
+}
