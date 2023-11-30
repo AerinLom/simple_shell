@@ -2,7 +2,6 @@
 #define SIMPLE_SHELL_H
 
 #include <readline/history.h>
-#include <readline/history.h>
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <stdio.h>

@@ -6,11 +6,22 @@
 
 void start_new_shell(void)
 {
-	char *profile_name = getenv("username");
+	char *profile_name = getenv("USER");
 
 	printf("hello, you are logged in\n");
 
-	printf("profile_name: @%s\n", profile_name);
+	if (profile_name != NULL)
+	{
+
+		printf("profile_name: @%s\n", profile_name);
+
+	}
+	else
+	{
+
+		printf("Not able to retrieve profile name.\n");
+
+	}
 }
 
 /**
@@ -25,16 +36,19 @@ int command_input(char *type_command)
 
 	memory = readline("\n$ ");
 
-	if (strlen(memory) != 0)
+	if (strlen(memory) != 0 && memory != NULL)
 	{
 		save_command_history(memory);
 
 		strcpy(type_command, memory);
 
+		free(memory);
+
 		return (0);
 	}
 	else
 	{
+		free(memory);
 		return (1);
 	}
 }
