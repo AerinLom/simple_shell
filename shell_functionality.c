@@ -52,3 +52,12 @@ int command_input(char *type_command)
 		return (1);
 	}
 }
+
+/**
+  *shell_prompt - what is displayed as a prompt on the shell
+  */
+
+void shell_prompt(void)
+{
+	printf("> ");
+}
