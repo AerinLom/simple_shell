@@ -8,8 +8,11 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <readline/readline.h>
 
 void start_new_shell(void);
 int command_input(char *type_command);
+void perf_command(char *action[]);
+
 
 #endif
