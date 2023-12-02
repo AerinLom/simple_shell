@@ -67,7 +67,7 @@ void shell_prompt(void)
  * @action: system command to be executed
  */
 
-void perf_command(char *action)
+void perf_command(char *action[])
 {
 	pid_t new_process = fork();
 
@@ -77,7 +77,7 @@ void perf_command(char *action)
 		exit(terminate);
 	} else if (new_process == 0)
 	{
-		if (execve(action[0], action) == -1)
+		if (execve(action[0], action, NULL) == -1)
 		{
 			printf("\nfailed to execute command");
 		}
