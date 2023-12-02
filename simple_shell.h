@@ -15,6 +15,8 @@ int command_input(char *type_command);
 void perf_command(char *action[]);
 void save_command_history(char *command);
 int standby(int *condition);
+int main();
+void shell_prompt();
 
 
 #endif
