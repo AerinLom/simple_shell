@@ -59,7 +59,7 @@ int command_input(char *type_command)
 
 void shell_prompt(void)
 {
-	printf("> ");
+	printf("$ ");
 }
 
 /**
