@@ -69,6 +69,7 @@ void shell_prompt(void)
 
 void perf_command(char *action[])
 {
+	int terminate = 0;
 	pid_t new_process = fork();
 
 	if (new_process == -1)
