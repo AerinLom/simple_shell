@@ -61,3 +61,35 @@ void shell_prompt(void)
 {
 	printf("> ");
 }
+
+/**
+ * perf_command - function handles system commands
+ * @action: system command to be executed
+ */
+
+void perf_command(char *action)
+{
+	pid_t new_process = fork();
+
+	if (new_process == -1)
+	{
+		printf("\nerror, could not fork");
+		exit(terminate);
+	} else if (new_process == 0)
+	{
+		if (execve(action[0], action) == -1)
+		{
+			printf("\nfailed to execute command");
+		}
+		exit(terminate);
+	} else
+	{
+		int condition;
+
+		if (standby(&condition) == -1)
+		{
+			printf("\nfailed to standby");
+			exit(terminate);
+		}
+	}
+}
