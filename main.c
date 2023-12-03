@@ -2,12 +2,13 @@
 
 int main()
 {
-	int condition, terminate = 0;
+	char command_size[MAX_SIZE];
 
-	if (standby(&condition) == -1)
+	while (1)
 	{
-		printf("\nFailed to standby");
-		exit(terminate);
+		read_input(command_size, sizeof(command_size));
+
+		exe_command(command_size);
 	}
 	return (0);
 }

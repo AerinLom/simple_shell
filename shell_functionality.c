@@ -8,89 +8,75 @@ void start_new_shell(void)
 {
 	char *profile_name = getenv("USER");
 
-	printf("hello, you are logged in\n");
+	shell_print("hello, you are logged in\n");
 
 	if (profile_name != NULL)
 	{
 
-		printf("profile_name: @%s\n", profile_name);
+		shell_print("profile_name: @%s\n");
 
 	}
 	else
 	{
 
-		printf("Not able to retrieve profile name.\n");
+		shell_print("Not able to retrieve profile name.\n");
 
 	}
 }
 
 /**
- * command_input - function captures user input
- * @type_command: a pointer pointing to a character
- * Description: This function displays user input and stores it
- * Return: 0 if string is empty, otherwise return 1
- */
-int command_input(char *type_command)
-{
-	char *memory;
-
-	memory = readline("\n$ ");
-
-	if (strlen(memory) != 0 && memory != NULL)
-	{
-		save_command_history(memory);
-
-		strcpy(type_command, memory);
-
-		free(memory);
-
-		return (0);
-	}
-	else
-	{
-		free(memory);
-		return (1);
-	}
-}
-
-/**
-  *shell_prompt - what is displayed as a prompt on the shell
-  */
-
-void shell_prompt(void)
-{
-	printf("$ ");
-}
-
-/**
- * perf_command - function handles system commands
+ * exe_command - function handles system commands
  * @action: system command to be executed
  */
 
-void perf_command(char *action[])
+void exe_command(char *command)
 {
-	int terminate = 0;
-	pid_t new_process = fork();
+	char *token_pos, *arguments[MAX_SIZE];
+	int argument_count = 0;
+	pid_t new_process;
+
+	token_pos = strtok(command, " ");
+	while (token_pos != NULL)
+	{
+		arguments[argument_count] = token_pos;
+		argument_count++;
+		token_pos = strtok(NULL, " ");
+	}
+	arguments[argument_count] = NULL;
+	if (argument_count == 0)
+	{
+		return;
+	}
+	if (strcmp(arguments[0], "exit") == 0) 
+	{
+		exit_shell();
+	}
+	if (strcmp(arguments[0], "cd") == 0)
+	{
+		if (change_dir(arguments) == -1)
+		{
+			return;
+		}
+	}
+	if (strcmp(arguments[0], "ls") == 0)
+	{
+		list_dir(arguments);
+	}
+	new_process = fork();
 
 	if (new_process == -1)
 	{
-		printf("\nerror, could not fork");
-		exit(terminate);
+		perror("fork");
+		exit(EXIT_FAILURE);
 	} else if (new_process == 0)
 	{
-		if (execve(action[0], action, NULL) == -1)
+		if (execve(arguments[0], arguments, environ) == -1)
 		{
-			printf("\nfailed to execute command");
+			perror("execve");
+			exit(EXIT_FAILURE);
 		}
-		exit(terminate);
 	} else
 	{
-		int condition;
-
-		if (standby(&condition) == -1)
-		{
-			printf("\nfailed to standby");
-			exit(terminate);
-		}
+		waitpid(new_process, NULL, 0);
 	}
 }
