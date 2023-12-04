@@ -70,7 +70,7 @@ int path_check(char *command)
 
 void exe_command(char *command)
 {
-	char *token_stream, *argument_param[MAX_SIZE];
+	char *token_stream, *argument_param[MAX_SIZE], **current_env = environ;
 	int argument_tally = 0;
 	pid_t new_process_id;
 
@@ -102,9 +102,19 @@ void exe_command(char *command)
 	{
 		list_dir(argument_param);
 	}
+	if (strcmp(argument_param[0], "env") == 0)
+	{
+		while (*current_env != NULL)
+		{
+			shell_print(*current_env);
+			shell_print("\n");
+			current_env++;
+		}
+	}
 	if (path_check(argument_param[0]) == -1)
 	{
-		shell_print("Command not found\n");
+		shell_print(argument_param[0]);
+		shell_print(": not found\n");
 	}
 	else
 	{
@@ -114,15 +124,15 @@ void exe_command(char *command)
 		perror("fork");
 		exit(EXIT_FAILURE);
 	} else if (new_process_id == 0)
-	{
-		if (execve(argument_param[0], argument_param, environ) == -1)
 		{
-			perror("execve");
-			exit(EXIT_FAILURE);
+			if (execve(argument_param[0], argument_param, environ) == -1)
+			{
+				exit(EXIT_FAILURE);
+			}
+			else
+			{
+			waitpid(new_process_id, NULL, 0);
+			}
 		}
-	} else
-	{
-		waitpid(new_process_id, NULL, 0);
-	}
 	}
 }
