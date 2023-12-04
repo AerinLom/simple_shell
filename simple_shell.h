@@ -18,11 +18,12 @@ void start_new_shell(void);
 int command_input(char *type_command);
 void exe_command(char *command);
 void save_command_history(char *command);
-int main();
+int main(void);
 void shell_print(const char *input);
 int read_input(char *input, size_t input_size);
-void exit_shell();
+void exit_shell(void);
 void list_dir(char *args[]);
 int change_dir(char *args[]);
+int path_check(char *command);
 
 #endif

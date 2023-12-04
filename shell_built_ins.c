@@ -19,7 +19,7 @@ int change_dir(char *arguments[])
 	return (0);
 }
 
-void exit_shell()
+void exit_shell(void)
 {
 shell_print("Exiting shell.\n");
 exit(EXIT_SUCCESS);

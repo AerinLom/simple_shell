@@ -18,12 +18,56 @@ void start_new_shell(void)
 		shell_print("Not able to retrieve user_avatar.\n");
 	}
 }
+
+int path_check(char *command)
+{
+	char *route, *token_stream;
+	char *route_env = getenv("PATH");
+	char route_buffer[MAX_SIZE];
+
+	if (access(command, F_OK | X_OK) == 0)
+	{
+		return (0);
+	}
+	if (route_env == NULL)
+	{
+		shell_print("Error: PATH environment variable not set.\n");
+		return (-1);
+	}
+	strcpy(route_buffer, route_env);
+	token_stream = strtok(route_buffer, ":");
+
+	while (token_stream != NULL)
+	{
+		route = (char *)malloc(strlen(token_stream) + strlen(command) + 2);
+		if (route == NULL)
+		{
+			perror("malloc");
+			exit(EXIT_FAILURE);
+		}
+		strcpy(route, token_stream);
+		strcat(route, "/");
+		strcat(route, command);
+
+		if (access(route, F_OK | X_OK) == 0)
+		{
+			free(route);
+			return (0);
+		}
+		free(route);
+		token_stream = strtok(NULL, ":");
+	}
+	return (-1);
+}
+
+
 /**
  * exe_command - function handles system commands
  * @command: input string that is implemented by the system
  * Description: this function analysis the input from user and
  * checks if basic linux system commands are being executed
  */
+
 void exe_command(char *command)
 {
 	char *token_stream, *argument_param[MAX_SIZE];
@@ -58,6 +102,12 @@ void exe_command(char *command)
 	{
 		list_dir(argument_param);
 	}
+	if (path_check(argument_param[0]) == -1)
+	{
+		shell_print("Command not found\n");
+	}
+	else
+	{
 	new_process_id = fork();
 	if (new_process_id == -1)
 	{
@@ -73,5 +123,6 @@ void exe_command(char *command)
 	} else
 	{
 		waitpid(new_process_id, NULL, 0);
+	}
 	}
 }

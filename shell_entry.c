@@ -1,6 +1,6 @@
 #include "simple_shell.h"
 
-int main()
+int main(void)
 {
 	char command_size[MAX_SIZE];
 
