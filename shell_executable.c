@@ -19,6 +19,11 @@ void start_new_shell(void)
 	}
 }
 
+/**
+ * path_check - function evaluates whether path is included in command or built-in
+ * @command: the command to be evaluated
+ * Return: 0 if command is built in, otherwise -1
+ */
 int path_check(char *command)
 {
 	char *route, *token_stream;

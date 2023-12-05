@@ -1,16 +1,27 @@
 #include "simple_shell.h"
+/**
+ * shell_print - function outputs the shell to the standard output
+ * @user_input: string to be evaluated and printed
+ */
 
-void shell_print(const char *input)
+void shell_print(const char *user_input)
 {
-	write(STDOUT_FILENO, input, strlen(input));
+	write(STDOUT_FILENO, user_input, strlen(user_input));
 }
 
-int read_input(char *input, size_t input_size)
+/**
+ * read_input - evaluates input from user
+ * @user_input: the string to be read and evaluated
+ * @input_size: total number of characters that can be kept by the buffer
+ * Return: return 1 upon successful execution
+ */
+
+int read_input(char *user_input, size_t input_size)
 {
 	shell_print("$ ");
 	fflush(stdout);
 
-	if (fgets(input, input_size, stdin) == NULL)
+	if (fgets(user_input, input_size, stdin) == NULL)
 	{
 		if (feof(stdin))
 		{
@@ -23,6 +34,6 @@ int read_input(char *input, size_t input_size)
 			exit(EXIT_FAILURE);
 		}
 	}
-	input[strcspn(input, "\n")] = '\0';
+	user_input[strcspn(user_input, "\n")] = '\0';
 	return (1);
 }
