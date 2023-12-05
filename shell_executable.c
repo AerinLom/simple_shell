@@ -34,7 +34,7 @@ int path_check(char *command)
 		shell_print("Error: PATH environment variable not set.\n");
 		return (-1);
 	}
-	strcpy(route_buffer, route_env);
+	string_cpy(route_buffer, route_env);
 	token_stream = strtok(route_buffer, ":");
 
 	while (token_stream != NULL)
@@ -45,7 +45,7 @@ int path_check(char *command)
 			perror("malloc");
 			exit(EXIT_FAILURE);
 		}
-		strcpy(route, token_stream);
+		string_cpy(route, token_stream);
 		strcat(route, "/");
 		strcat(route, command);
 

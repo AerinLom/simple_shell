@@ -8,6 +8,7 @@ void shell_print(const char *input)
 int read_input(char *input, size_t input_size)
 {
 	shell_print("$ ");
+	fflush(stdout);
 
 	if (fgets(input, input_size, stdin) == NULL)
 	{
