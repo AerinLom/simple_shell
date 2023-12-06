@@ -26,5 +26,6 @@ void list_dir(char *args[]);
 int change_dir(char *args[]);
 int path_check(char *command);
 char *string_cpy(char *destination, char *source);
+void handle_builtins(char **argument_param, char **current_env);
 
 #endif

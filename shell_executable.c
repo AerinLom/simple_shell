@@ -20,7 +20,7 @@ void start_new_shell(void)
 }
 
 /**
- * path_check - function evaluates whether path is included in command or built-in
+ * path_check - function evaluates whether command in path exists
  * @command: the command to be evaluated
  * Return: 0 if command is built in, otherwise -1
  */
@@ -65,6 +65,36 @@ int path_check(char *command)
 	return (-1);
 }
 
+/**
+  *handle_builtins - function that handles custom built ins
+  *@argument_param: an array of command arguments
+  *@current_env: the current enviroment of the shell
+  */
+
+void handle_builtins(char **argument_param, char **current_env)
+{
+	if (strcmp(argument_param[0], "exit") == 0)
+	{
+		exit_shell();
+	}
+	else if (strcmp(argument_param[0], "cd") == 0)
+	{
+		change_dir(argument_param);
+	}
+	else if (strcmp(argument_param[0], "ls") == 0)
+
+	{
+		list_dir(argument_param);
+	}
+	else if (strcmp(argument_param[0], "env") == 0)
+	{
+		while (*current_env)
+		{
+			shell_print(*current_env++);
+			shell_print("\n");
+		}
+	}
+}
 
 /**
  * exe_command - function handles system commands
@@ -80,11 +110,9 @@ void exe_command(char *command)
 	pid_t new_process_id;
 
 	token_stream = strtok(command, " ");
-
 	while (token_stream != NULL)
 	{
-		argument_param[argument_tally] = token_stream;
-		argument_tally++;
+		argument_param[argument_tally++] = token_stream;
 		token_stream = strtok(NULL, " ");
 	}
 	argument_param[argument_tally] = NULL;
@@ -92,52 +120,28 @@ void exe_command(char *command)
 	{
 		return;
 	}
-	if (strcmp(argument_param[0], "exit") == 0)
-	{
-		exit_shell();
-	}
-	if (strcmp(argument_param[0], "cd") == 0)
-	{
-		if (change_dir(argument_param) == -1)
-		{
-			return;
-		}
-	}
-	if (strcmp(argument_param[0], "ls") == 0)
-	{
-		list_dir(argument_param);
-	}
-	if (strcmp(argument_param[0], "env") == 0)
-	{
-		while (*current_env != NULL)
-		{
-			shell_print(*current_env);
-			shell_print("\n");
-			current_env++;
-		}
-	}
-	if (path_check(argument_param[0]) == -1)
+	handle_builtins(argument_param, current_env);
+	if (path_check(argument_param[0]) == -1
+	&& strcmp(argument_param[0], "cd") != 0)
 	{
 		shell_print(argument_param[0]);
 		shell_print(": not found\n");
 	}
 	else
 	{
-	new_process_id = fork();
-	if (new_process_id == -1)
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	} else if (new_process_id == 0)
+		new_process_id = fork();
+		if (new_process_id == -1)
 		{
-			if (execve(argument_param[0], argument_param, environ) == -1)
-			{
-				exit(EXIT_FAILURE);
-			}
-			else
-			{
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
+		else if (new_process_id == 0)
+		{
+			execve(argument_param[0], argument_param, environ), exit(EXIT_FAILURE);
+		}
+		else
+		{
 			waitpid(new_process_id, NULL, 0);
-			}
 		}
 	}
 }

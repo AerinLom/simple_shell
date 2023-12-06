@@ -10,15 +10,14 @@ int change_dir(char *arguments[])
 {
 	if (arguments[1] != NULL)
 	{
-		if (chdir(arguments[1]) == -1)
+		if (chdir(arguments[1]) != 0)
 		perror("chdir");
 		return (-1);
 	}
 
-	else
+	else if (arguments[1] == NULL)
 	{
 	shell_print("cd: missing argument\n");
-
 	return (-1);
 	}
 
