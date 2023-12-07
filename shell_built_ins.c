@@ -2,20 +2,20 @@
 
 /**
  * change_dir - function switches from current directory
- * @arguments: arguments stored inside strings of an array
+ * @stored_arguments: arguments stored inside strings of an array
  * Return: 0 on successful execution, otherwise return -1
  */
 
-int change_dir(char *arguments[])
+int change_dir(char *stored_arguments[])
 {
-	if (arguments[1] != NULL)
+	if (stored_arguments[1] != NULL)
 	{
-		if (chdir(arguments[1]) != 0)
+		if (chdir(stored_arguments[1]) != 0)
 		perror("chdir");
 		return (-1);
 	}
 
-	else if (arguments[1] == NULL)
+	else if (stored_arguments[1] == NULL)
 	{
 	shell_print("cd: missing argument\n");
 	return (-1);
@@ -36,10 +36,10 @@ exit(EXIT_SUCCESS);
 
 /**
  * list_dir - fucnction establishes a list of contents of a current directory
- * @arguments: commands arguments stored inside an array of strings
+ * @stored_arguments: commands arguments stored inside an array of strings
  */
 
-void list_dir(char *arguments[])
+void list_dir(char *stored_arguments[])
 {
 	pid_t new_process_id;
 
@@ -52,7 +52,7 @@ void list_dir(char *arguments[])
 	}
 	else if (new_process_id == 0)
 	{
-		execve("/bin/ls", arguments, environ);
+		execve("/bin/ls", stored_arguments, environ);
 		perror("execve");
 		exit(EXIT_FAILURE);
 	}
