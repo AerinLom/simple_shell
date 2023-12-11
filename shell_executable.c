@@ -21,16 +21,16 @@ void start_new_shell(void)
 
 /**
  * path_check - function evaluates whether command in path exists
- * @command: the command to be evaluated
+ * @command_value: the command to be evaluated
  * Return: 0 if command is built in, otherwise -1
  */
-int path_check(char *command)
+int path_check(char *command_value)
 {
 	char *route, *token_stream;
 	char *route_env = getenv("PATH");
 	char route_buffer[MAX_SIZE];
 
-	if (access(command, F_OK | X_OK) == 0)
+	if (access(command_value, F_OK | X_OK) == 0)
 	{
 		return (0);
 	}
@@ -44,7 +44,7 @@ int path_check(char *command)
 
 	while (token_stream != NULL)
 	{
-		route = (char *)malloc(strlen(token_stream) + strlen(command) + 2);
+		route = (char *)malloc(strlen(token_stream) + strlen(command_value) + 2);
 		if (route == NULL)
 		{
 			perror("malloc");
@@ -52,7 +52,7 @@ int path_check(char *command)
 		}
 		string_cpy(route, token_stream);
 		strcat(route, "/");
-		strcat(route, command);
+		strcat(route, command_value);
 
 		if (access(route, F_OK | X_OK) == 0)
 		{
@@ -68,10 +68,10 @@ int path_check(char *command)
 /**
   *handle_builtins - function that handles custom built ins
   *@argument_param: an array of command arguments
-  *@current_env: the current enviroment of the shell
+  *@ongoing_env: the current enviroment of the shell
   */
 
-void handle_builtins(char **argument_param, char **current_env)
+void handle_builtins(char **argument_param, char **ongoing_env)
 {
 	if (strcmp(argument_param[0], "exit") == 0)
 	{
@@ -88,9 +88,9 @@ void handle_builtins(char **argument_param, char **current_env)
 	}
 	else if (strcmp(argument_param[0], "env") == 0)
 	{
-		while (*current_env)
+		while (*ongoing_env)
 		{
-			shell_print(*current_env++);
+			shell_print(*ongoing_env++);
 			shell_print("\n");
 		}
 	}
@@ -105,7 +105,7 @@ void handle_builtins(char **argument_param, char **current_env)
 
 void exe_command(char *command)
 {
-	char *token_stream, *argument_param[MAX_SIZE], **current_env = environ;
+	char *token_stream, *argument_param[MAX_SIZE], **ongoing_env = environ;
 	int argument_tally = 0;
 	pid_t new_process_id;
 
@@ -120,7 +120,7 @@ void exe_command(char *command)
 	{
 		return;
 	}
-	handle_builtins(argument_param, current_env);
+	handle_builtins(argument_param, ongoing_env);
 	if (path_check(argument_param[0]) == -1
 	&& strcmp(argument_param[0], "cd") != 0)
 	{

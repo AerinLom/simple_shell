@@ -24,8 +24,8 @@ int read_input(char *input, size_t input_size);
 void exit_shell(void);
 void list_dir(char *stored_arguments[]);
 int change_dir(char *stored_arguments[]);
-int path_check(char *command);
+int path_check(char *command_value);
 char *string_cpy(char *destination, char *source);
-void handle_builtins(char **argument_param, char **current_env);
+void handle_builtins(char **argument_param, char **ongoing_env);
 
 #endif
