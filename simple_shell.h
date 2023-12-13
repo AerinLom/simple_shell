@@ -19,6 +19,7 @@ int command_input(char *type_command);
 void exe_command(char *command);
 void save_command_history(char *command);
 int main(void);
+void shell_prompt(void);
 void shell_print(const char *input);
 int read_input(char *input, size_t input_size);
 void exit_shell(void);

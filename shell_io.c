@@ -9,6 +9,12 @@ void shell_print(const char *user_input)
 	write(STDOUT_FILENO, user_input, strlen(user_input));
 }
 
+void shell_prompt(void)
+{
+	shell_print("$ ");
+	fflush(stdout);
+}
+
 /**
  * read_input - evaluates input from user
  * @user_input: the string to be read and evaluated
@@ -18,9 +24,6 @@ void shell_print(const char *user_input)
 
 int read_input(char *user_input, size_t input_size)
 {
-	shell_print("$ ");
-	fflush(stdout);
-
 	if (fgets(user_input, input_size, stdin) == NULL)
 	{
 		if (feof(stdin))

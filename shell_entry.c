@@ -10,6 +10,8 @@ int main(void)
 
 	while (1)
 	{
+		shell_prompt();
+
 		read_input(command_size, sizeof(command_size));
 
 		exe_command(command_size);
