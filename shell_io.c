@@ -12,7 +12,6 @@ void shell_print(const char *user_input)
 void shell_prompt(void)
 {
 	shell_print("$ ");
-	fflush(stdout);
 }
 
 /**
