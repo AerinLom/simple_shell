@@ -9,9 +9,13 @@ void shell_print(const char *user_input)
 	write(STDOUT_FILENO, user_input, strlen(user_input));
 }
 
+/**
+  *shell_prompt - prints the shell prompt
+  */
+
 void shell_prompt(void)
 {
-	shell_print("$ ");
+	shell_print("");
 }
 
 /**
@@ -21,13 +25,12 @@ void shell_prompt(void)
  * Return: return 1 upon successful execution
  */
 
-int read_input(char *user_input, size_t input_size)
+void read_input(char *user_input, size_t input_size)
 {
 	if (fgets(user_input, input_size, stdin) == NULL)
 	{
 		if (feof(stdin))
 		{
-			shell_print("\n");
 			exit(EXIT_SUCCESS);
 		}
 		else
@@ -37,5 +40,4 @@ int read_input(char *user_input, size_t input_size)
 		}
 	}
 	user_input[strcspn(user_input, "\n")] = '\0';
-	return (1);
 }

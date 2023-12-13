@@ -21,7 +21,7 @@ void save_command_history(char *command);
 int main(void);
 void shell_prompt(void);
 void shell_print(const char *input);
-int read_input(char *input, size_t input_size);
+void read_input(char *input, size_t input_size);
 void exit_shell(void);
 void list_dir(char *stored_arguments[]);
 int change_dir(char *stored_arguments[]);
