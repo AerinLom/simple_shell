@@ -30,7 +30,6 @@ int change_dir(char *stored_arguments[])
 
 void exit_shell(void)
 {
-shell_print("Exiting shell.\n");
 exit(EXIT_SUCCESS);
 }
 
